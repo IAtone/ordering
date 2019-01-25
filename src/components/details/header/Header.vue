@@ -1,5 +1,8 @@
 <template>
   <div class="header">
+    <router-link :to="{path: '/'}" class="return">
+      <i class="icon-arrow_lift"></i>
+    </router-link>
     <div class="content-wrapper">
       <div class="avatar">
         <img :src="seller.avatar" alt>
@@ -9,7 +12,11 @@
           <span class="brand"></span>
           <span class="name">{{ seller.name }}</span>
         </div>
-        <div class="description">{{ seller.description }} / {{ seller.deliveryTime }}分钟送达</div>
+        <div
+          class="description"
+          v-if="seller.description"
+        >{{ seller.description }} / {{ seller.deliveryTime }}分钟送达</div>
+        <div v-else class="description">{{ seller.deliveryTime }}分钟送达</div>
         <div v-if="seller.supports" class="support">
           <span class="icon" :class="classMap[seller.supports[0].type]"></span>
           <span class="text">{{ seller.supports[0].description }}</span>
@@ -105,7 +112,7 @@ export default {
 <style lang="stylus" scoped>
 @import '../../../common/stylus/mixin.styl';
 
-//动画fade渐变消失出现
+// 动画fade渐变消失出现
 .fade-enter-active, .fade-leave-active {
   transition: opacity 1s;
 }
@@ -120,6 +127,20 @@ export default {
   overflow: hidden;
   color: #fff;
   background: rgba(7, 17, 27, 0.5);
+
+  .return {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+
+    .icon-arrow_lift {
+      display: block;
+      padding: 5px;
+      font-size: 20px;
+      color: #fff;
+    }
+  }
 
   .content-wrapper {
     position: relative;
@@ -200,7 +221,7 @@ export default {
         }
 
         .text {
-          line-height: 16px;
+          vertical-align: top;
           font-size: 12px;
         }
       }
@@ -289,6 +310,7 @@ export default {
     overflow: auto;
     background: rgba(7, 17, 27, 0.8);
     backdrop-filter: blur(10px);
+
     .detail-wrapper {
       width: 100%;
       min-height: 100%;

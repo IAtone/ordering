@@ -1,4 +1,6 @@
 import Index from '../components/Index.vue'
+import Mine from '../components/Mine.vue'
+import Main from '../components/Main.vue'
 import Details from '../components/details/Details.vue'
 import Goods from '../components/details/content/goods/Goods.vue'
 import Ratings from '../components/details/content/ratings/Ratings.vue'
@@ -8,11 +10,24 @@ export const routes = [
     {
         name: 'index',
         path: '/',
-        component: Index
+        component: Index,
+        redirect: '/',
+        children: [
+            {
+                name: 'main',
+                path: '/',
+                component: Main
+            },
+            {
+                name: 'mine',
+                path: '/mine',
+                component: Mine
+            }
+        ]
     },
     {
         name: 'details',
-        path: '/details',
+        path: '/details/:id',
         component: Details,
         redirect: '/details/goods',
         children: [

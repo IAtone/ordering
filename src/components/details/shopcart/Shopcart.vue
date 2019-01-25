@@ -140,14 +140,19 @@ export default {
       });
     },
     hideList() {
-        this.fold = true
+      this.fold = true;
     },
     pay() {
-        if (this.totalPrice < this.minPrice) {
-            return
-        }
-        alert(`您需要支付￥${this.totalPrice}`)
-
+      if (this.totalPrice < this.minPrice) {
+        return;
+      }
+      let price = 0;
+      if (this.deliveryPrice) {
+        price = this.totalPrice + this.deliveryPrice;
+      } else {
+        price = this.totalPrice;
+      }
+      alert(`您需要支付￥${price}`);
     },
     enter(el) {
       el.style.transform = "translateY(-100%)";
@@ -366,7 +371,7 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 40;
-    backdrop-filter: blur(10px)
+    backdrop-filter: blur(10px);
     background: rgba(7, 17, 27, 0.6);
   }
 }
