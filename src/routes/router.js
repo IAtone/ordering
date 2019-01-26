@@ -5,6 +5,9 @@ import Details from '../components/details/Details.vue'
 import Goods from '../components/details/content/goods/Goods.vue'
 import Ratings from '../components/details/content/ratings/Ratings.vue'
 import Seller from '../components/details/content/seller/Seller.vue'
+import Register from '../components/Register.vue'
+import Login from '../components/Login.vue'
+import Outer from '../components/Outer.vue'
 
 export const routes = [
     {
@@ -47,5 +50,20 @@ export const routes = [
                 component: Seller
             }
         ]
+    },
+    {
+        name: 'outer',
+        component: Outer,
+        path: '/outer'
+    },
+    {
+        name: 'register',
+        component: Register,
+        path: '/register'
+    },
+    {
+        name: 'login',
+        component: Login,
+        path: '/login'
     }
 ]

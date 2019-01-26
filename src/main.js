@@ -10,8 +10,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 // import {baseUrl} from '../vue.config'
 import VueCookies from 'vue-cookies'
 
-Vue.use(VueRouter)
 Vue.use(elementUI)
+Vue.use(VueRouter)
 Vue.use(VueCookies)
 
 axios.defaults.baseURL = 'https://www.atone.shop/'

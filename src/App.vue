@@ -14,6 +14,13 @@ export default {
 [v-cloak] {
   display: none;
 }
+.el-form-item__content {
+  margin-left: 0 !important;
+  text-align: center;
+}
+.el-form {
+  width: 90%;
+}
 /**
  * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
  * http://cssreset.com

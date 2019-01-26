@@ -25,13 +25,33 @@
         </div>
       </div>
       <Split></Split>
+      <div class="rating">
+        <h1 class="title">商家评价</h1>
+      </div>
+      <div class="rating-wrapper">
+        <ul>
+          <div class="no-rating">
+            <li>
+              <div class="user">
+                <span class="username">用户名</span>
+                <img :src="seller.avatar" alt class="avatar">
+              </div>
+              <div class="time">时间</div>
+              <p class="text">
+                内容
+              </p>
+            </li>
+          </div>
+        </ul>
+        <div>暂无评价</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Star from "../../star/Star";
-import Split from "../../split/Split"
+import Split from "../../split/Split";
 
 export default {
   components: {
@@ -67,11 +87,6 @@ export default {
       border-right: 1px solid rgba(7, 17, 27, 0.1);
       text-align: center;
 
-    //   @media only screen and (max-width: 320px) {
-    //     flex: 0 0 120px;
-    //     width: 120px;
-    //   }
-
       .score {
         margin-bottom: 6px;
         line-height: 28px;
@@ -96,10 +111,6 @@ export default {
     .overview-right {
       flex: 1;
       padding: 6px 0 6px 24px;
-
-    //   @media only screen and (max-width: 320px) {
-    //     padding-left: 24px;
-    //   }
 
       .score-wrapper {
         margin-bottom: 8px;
@@ -140,6 +151,82 @@ export default {
           color: rgb(127, 153, 159);
         }
       }
+    }
+  }
+
+  .rating {
+    padding-top: 18px;
+
+    .title {
+      line-height: 14px;
+      margin-left: 18px;
+      font-size: 14px;
+      color: rgb(7, 17, 27);
+    }
+  }
+
+  .rating-wrapper {
+    padding: 0 18px;
+
+    .rating-item {
+      position: relative;
+      padding: 16px 0;
+      border-1px(rgba(7, 17, 27, 0.1));
+
+      .user {
+        position: absolute;
+        right: 0;
+        top: 16px;
+        line-height: 12px;
+        font-size: 0;
+
+        .username {
+          display: inline-block;
+          margin-right: 6px;
+          vertical-align: top;
+          font-size: 10px;
+          color: rgb(147, 153, 159);
+        }
+
+        .avatar {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+        }
+      }
+
+      .time {
+        margin-bottom: 6px;
+        line-height: 12px;
+        font-size: 10px;
+        color: rgb(147, 153, 159);
+      }
+
+      .text {
+        line-height: 16px;
+        font-size: 12px;
+        color: rgb(7, 17, 27);
+
+        .icon-thumb_up, .icon-thumb_down {
+          margin-right: 4px;
+          line-height: 16px;
+          font-size: 12px;
+        }
+
+        .icon-thumb_up {
+          color: rgb(0, 160, 220);
+        }
+
+        .icon-thumb_down {
+          color: rgb(147, 153, 159);
+        }
+      }
+    }
+
+    .no-rating {
+      padding: 16px 0;
+      font-size: 12px;
+      color: rgb(147, 153, 159);
     }
   }
 }
