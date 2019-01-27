@@ -143,16 +143,21 @@ export default {
       this.fold = true;
     },
     pay() {
-      if (this.totalPrice < this.minPrice) {
-        return;
-      }
-      let price = 0;
-      if (this.deliveryPrice) {
-        price = this.totalPrice + this.deliveryPrice;
+      if (this.$cookies.get("email")) {
+        if (this.totalPrice < this.minPrice) {
+          return;
+        }
+        let price = 0;
+        if (this.deliveryPrice) {
+          price = this.totalPrice + this.deliveryPrice;
+        } else {
+          price = this.totalPrice;
+        }
+        alert(`您需要支付￥${price}`);
       } else {
-        price = this.totalPrice;
+        alert('未登录，请先登录！')
+        this.$router.push('/outer')
       }
-      alert(`您需要支付￥${price}`);
     },
     enter(el) {
       el.style.transform = "translateY(-100%)";

@@ -29,20 +29,20 @@
 </template>
 
 <script>
+import qs from 'qs'
+
 export default {
   data() {
     var checkEmail = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("邮箱不能为空"));
       }
-      setTimeout(() => {
         let pattern = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
         if (!pattern.test(value)) {
           callback(new Error("请输入正确的邮箱"));
         } else {
           callback();
         }
-      }, 1000);
     };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -59,8 +59,8 @@ export default {
         email: ""
       },
       rules2: {
-        pass: [{ validator: validatePass, trigger: "blur" }],
-        email: [{ validator: checkEmail, trigger: "blur" }]
+        email: [{ validator: checkEmail, trigger: "blur" }],
+        pass: [{ validator: validatePass, }]
       }
     };
   },
@@ -68,15 +68,35 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+         this.login()
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    login() {
+      let obj = {
+        send: 1,
+        email: this.ruleForm2.email,
+        password: this.ruleForm2.pass
+      }
+      let data = qs.stringify(obj)
+      this.$axios.post('ordering/api/loginSave.php', data)
+      .then((res) => {
+        if (res.data.valid) {
+          alert(res.data.message)
+          this.$cookies.set('email', this.ruleForm2.email)
+          this.$router.push('/')
+        } else {
+          alert(res.data.message + ',请重新输入!')
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
   }
 };

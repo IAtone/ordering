@@ -9,6 +9,8 @@ import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
 import Outer from '../components/Outer.vue'
 
+import Cookie from '../common/js/cookie'
+
 export const routes = [
     {
         name: 'index',
@@ -24,7 +26,16 @@ export const routes = [
             {
                 name: 'mine',
                 path: '/mine',
-                component: Mine
+                component: Mine,
+                beforeEnter: (to, from, next) => {
+                    if (Cookie('email')) {
+                        console.log('das')
+                        next()
+                    } else {
+                        alert('未登录，请先登录')
+                        next({ name: 'outer' })
+                    }
+                }
             }
         ]
     },
@@ -65,5 +76,10 @@ export const routes = [
         name: 'login',
         component: Login,
         path: '/login'
+    },
+    // 没找到路径跳到根路径
+    {
+        path: '*',
+        redirect: '/'
     }
 ]

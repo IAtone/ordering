@@ -37,20 +37,20 @@
 </template>
 
 <script>
+import qs from 'qs'
+
 export default {
   data() {
     var checkEmail = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("邮箱不能为空"));
       }
-      setTimeout(() => {
-        let pattern = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-        if (!pattern.test(value)) {
-          callback(new Error("请输入正确的邮箱"));
-        } else {
-          callback();
-        }
-      }, 1000);
+      let pattern = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+      if (!pattern.test(value)) {
+        callback(new Error("请输入正确的邮箱"));
+      } else {
+        callback();
+      }
     };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -82,9 +82,9 @@ export default {
         email: ""
       },
       rules2: {
-        pass: [{ validator: validatePass, trigger: "blur" }],
-        checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        email: [{ validator: checkEmail, trigger: "blur" }]
+        email: [{ validator: checkEmail, trigger: "blur" }],
+        pass: [{ validator: validatePass, }],
+        checkPass: [{ validator: validatePass2 }]
       }
     };
   },
@@ -92,15 +92,36 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          this.register()
+          // alert("submit!");
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    register() {
+      let obj = {
+        send: 1,
+        email: this.ruleForm2.email,
+        password: this.ruleForm2.pass 
+      }
+      let data = qs.stringify(obj)
+      this.$axios.post('ordering/api/registerSave.php', data)
+      .then((res) => {
+        if (res.data.valid) {
+          alert(res.data.message)
+          this.$router.push('/login')
+        } else {
+          alert(res.data.message)
+          this.resetForm('ruleForm2');
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
   }
 };
