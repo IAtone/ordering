@@ -4,9 +4,8 @@
     <div class="mine-content">
       <div class="avatar detail" @click="showAvatar">
         <span>头像</span>
-        <img :src="user.userAvatar" alt="" v-if="user.userAvatar">
-        <img :src="imgUrl" alt="" v-if="imgUrl">
-        <img src="../components/details/header/brand@2x.png" alt v-else>
+        <img :src="imgUrl" alt v-if="imgUrl">
+        <img src="https://tvax4.sinaimg.cn/default/images/default_avatar_female_50.gif" alt v-else>
         <i class="icon-arrow_lift"></i>
       </div>
       <div class="username detail">
@@ -28,13 +27,16 @@
         <span>修改密码</span>
         <i class="icon-arrow_lift"></i>
       </div>
+      <div class="logout">
+        <el-button type="primary" @click="logout">注销登录</el-button>
+      </div>
     </div>
     <Avatar ref="avatar" @baseUrl="baseUrl"></Avatar>
   </div>
 </template>
 
 <script>
-import Avatar from './profile/Avatar'
+import Avatar from "./profile/Avatar";
 
 export default {
   components: {
@@ -44,7 +46,8 @@ export default {
     return {
       email: this.$cookies.get("email"),
       user: {},
-      imgUrl: ""
+      imgUrl: "",
+      dialogVisible: false
     };
   },
   methods: {
@@ -53,18 +56,30 @@ export default {
         .get("ordering/api/getUser.php?email=" + this.email)
         .then(res => {
           console.log(res.data);
-          this.user = res.data[0]
+          this.user = res.data[0];
+          this.imgUrl =
+            "https://www.atone.shop/ordering/" + this.user.userAvatar.slice(3);
+          console.log(this.imgUrl);
         })
         .catch(err => {
           console.log(err);
         });
     },
     showAvatar() {
-      console.log(this.$refs.avatar)
-      this.$refs.avatar.show = true
+      console.log(this.$refs.avatar);
+      this.$refs.avatar.show = true;
     },
     baseUrl(data) {
-      this.imgUrl = data
+      this.imgUrl = data;
+    },
+    logout() {
+      let flag = confirm('确定注销')
+      if (flag === true) {
+        this.$cookies.remove('email')
+        this.$router.push('/outer')
+      } else {
+        return 
+      }
     }
   },
   created() {
@@ -100,8 +115,9 @@ export default {
 
       span {
         font-size: 14px;
+
         &:nth-child(2) {
-            margin-right: 20px;
+          margin-right: 20px;
         }
       }
 
@@ -125,6 +141,11 @@ export default {
           top: 38px;
         }
       }
+    }
+
+    .logout {
+      padding: 20px 0;
+      text-align: center
     }
   }
 }
