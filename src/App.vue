@@ -21,6 +21,28 @@ export default {
 .el-form {
   width: 90%;
 }
+
+/* 上传头像 */
+.vicp-wrap {
+    width: auto !important;
+    height: auto !important;
+}
+.vue-image-crop-upload .vicp-wrap .vicp-close {
+    right: 0 !important;
+    top: 0 !important;
+}
+.vue-image-crop-upload .vicp-wrap {
+  bottom: 50px !important;
+}
+.vicp-crop-left {
+  float: none !important;
+}
+.vicp-crop-right {
+  float: none !important;
+}
+.vicp-step2 {
+  margin-left: 40px !important;
+}
 /**
  * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
  * http://cssreset.com
