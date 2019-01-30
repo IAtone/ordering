@@ -1,29 +1,41 @@
 <template>
   <div class="return-wrapper">
-    <router-link :to="{path: '/outer'}" class="return">
+    <div @click="hide" class="return">
       <i class="icon-arrow_lift"></i>
       <span>返回</span>
-    </router-link>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    hide() {
+      this.$emit('hide', false)
+    }
+  }
+};
 </script>
 
 <style lang="stylus" scoped>
 .return-wrapper {
-    padding: 20px 0;
   .return {
+    width: auto;
+
     .icon-arrow_lift {
-      display: block;
-      padding: 20px;
+      display: inline-block;
+      padding: 20px 5px 20px 10px;
       font-size: 20px;
       color: #123456;
     }
+
     span {
-        font-size: 14px;
-        color: #000;
+      display: inline-block;
+      vertical-align: top;
+      height: 60px;
+      line-height: 60px;
+      font-size: 14px;
+      color: #000;
     }
   }
 }

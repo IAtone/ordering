@@ -8,7 +8,7 @@
         <img src="https://tvax4.sinaimg.cn/default/images/default_avatar_female_50.gif" alt v-else>
         <i class="icon-arrow_lift"></i>
       </div>
-      <div class="username detail">
+      <div class="username detail" @click="showUsername">
         <span>昵称</span>
         <span v-if="user.userName">{{ user.userName }}</span>
         <span v-else>您还没有昵称哦!</span>
@@ -18,12 +18,17 @@
         <span>邮箱</span>
         <span>{{ email }}</span>
       </div>
-      <div class="phone detail">
+      <div class="level detail">
+        <span>用户等级</span>
+        <span>{{ this.level }}</span>
+      </div>
+      <div class="phone detail" @click="showPhone">
         <span>手机号码</span>
-        <span>321432432432</span>
+        <span v-if="user.phoneNumber">{{ user.phoneNumber }}</span>
+        <span v-else>您还没有添加手机号码哦!</span>
         <i class="icon-arrow_lift"></i>
       </div>
-      <div class="pwd detail">
+      <div class="pwd detail" @click="showPassword">
         <span>修改密码</span>
         <i class="icon-arrow_lift"></i>
       </div>
@@ -32,21 +37,31 @@
       </div>
     </div>
     <Avatar ref="avatar" @baseUrl="baseUrl"></Avatar>
+    <Username ref="username" @setUsername="setUsername" :getUsername="user.userName"></Username>
+    <Phone ref="phone" @setPhone="setPhone" :getPhone="user.phoneNumber"></Phone>
+    <Password ref="password"></Password>
   </div>
 </template>
 
 <script>
 import Avatar from "./profile/Avatar";
+import Username from "./profile/Username"
+import Phone from "./profile/Phone"
+import Password from "./profile/Password"
 
 export default {
   components: {
-    Avatar
+    Avatar,
+    Username,
+    Phone,
+    Password
   },
   data() {
     return {
       email: this.$cookies.get("email"),
       user: {},
       imgUrl: "",
+      level: "",
       dialogVisible: false
     };
   },
@@ -59,18 +74,32 @@ export default {
           this.user = res.data[0];
           this.imgUrl =
             "https://www.atone.shop/ordering/" + this.user.userAvatar.slice(3);
-          console.log(this.imgUrl);
+          this.level = this.user.userLevel === "1" ? "普通用户" : "会员"; 
         })
         .catch(err => {
           console.log(err);
         });
     },
     showAvatar() {
-      console.log(this.$refs.avatar);
       this.$refs.avatar.show = true;
+    },
+    showUsername() {
+      this.$refs.username.show = true;
+    },
+    showPhone() {
+      this.$refs.phone.show = true;
+    },
+    showPassword() {
+      this.$refs.password.show = true;
     },
     baseUrl(data) {
       this.imgUrl = data;
+    },
+    setUsername(data) {
+      this.user.userName = data;
+    },
+    setPhone(data) {
+      this.user.phoneNumber = data;
     },
     logout() {
       let flag = confirm('确定注销')
@@ -78,7 +107,6 @@ export default {
         this.$cookies.remove('email')
         this.$router.push('/outer')
       } else {
-        return 
       }
     }
   },

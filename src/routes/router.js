@@ -29,7 +29,6 @@ export const routes = [
                 component: Mine,
                 beforeEnter: (to, from, next) => {
                     if (Cookie('email')) {
-                        console.log('das')
                         next()
                     } else {
                         alert('未登录，请先登录')

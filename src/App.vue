@@ -15,7 +15,6 @@ export default {
   display: none;
 }
 .el-form-item__content {
-  margin-left: 0 !important;
   text-align: center;
 }
 .el-form {
