@@ -1,5 +1,5 @@
 <template>
-  <transition name="move">
+  <!-- <transition name="move"> -->
     <div class="details">
       <Header :seller="seller"></Header>
       <div class="tab border-1px">
@@ -17,7 +17,7 @@
         <router-view :seller="seller"></router-view>
       </keep-alive>
     </div>
-  </transition>
+  <!-- </transition> -->
 </template>
 
 <script>

@@ -125,7 +125,7 @@ export default {
   right: 0;
 
   .title {
-    padding-top: 20%;
+    padding-top: 10%;
     font-size: 16px;
     text-align: center;
   }

@@ -2,7 +2,7 @@
   <transition name="move">
     <div class="phone" v-show="show">
       <Return :show="show" @hide="hide"></Return>
-      <el-form status-icon label-width="80px" class="content-wrapper">
+      <el-form status-icon label-width="70px" class="content-wrapper">
         <el-form-item label="手机号码" class="content">
           <el-input type="number" autocomplete="off" v-model="phoneNumber" placeholder="请输入手机号码"></el-input>
         </el-form-item>

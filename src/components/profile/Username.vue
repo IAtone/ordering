@@ -57,6 +57,7 @@ export default {
               alert(res.data.message);
               this.$emit("setUsername", this.username);
               this.show = false;
+              this.$cookies.set('username', this.username)
             } else {
               alert(res.data.message);
             }

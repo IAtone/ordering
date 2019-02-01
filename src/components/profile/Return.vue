@@ -20,7 +20,7 @@ export default {
 <style lang="stylus" scoped>
 .return-wrapper {
   .return {
-    width: auto;
+    width: 100px;
 
     .icon-arrow_lift {
       display: inline-block;

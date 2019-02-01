@@ -7,8 +7,8 @@
         status-icon
         :rules="rules2"
         ref="ruleForm2"
-        label-width="100px"
-        class="demo-ruleForm"
+        label-width="70px"
+        class="demo-ruleForm content-wrapper"
       >
         <el-form-item label="旧密码" prop="oldPwd">
           <el-input type="password" v-model="ruleForm2.oldPwd" autocomplete="off"></el-input>

@@ -68,9 +68,12 @@ export default {
       this.$axios
         .post("ordering/api/avatarSave.php", data)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.valid) {
             alert(res.data.message);
+            // console.log(this.avatarUrl)
+            localStorage.setItem('userAvatar', this.avatarUrl)
+            // console.log(localStorage.getItem('userAvatar'))
           } else {
             alert(res.data.message);
           }
