@@ -32,12 +32,17 @@
         <span @click="showCom">用户评价</span>
       </div>
       <div class="rating-wrapper">
-        <ul v-if="commits">
+        <ul v-if="commits.length > 0">
           <div class="no-rating">
             <li class="rating-item" v-for="(val, index) in commits" :key="index">
               <div class="user">
                 <span class="username">{{ val.userName }}</span>
-                <img :src="'https://www.atone.shop/ordering/' + val.userAvatar.slice(3)" alt class="avatar" v-if="avatar">
+                <img
+                  :src="'https://www.atone.shop/ordering/' + val.userAvatar.slice(3)"
+                  alt
+                  class="avatar"
+                  v-if="val.userAvatar"
+                >
                 <img
                   src="https://tvax4.sinaimg.cn/default/images/default_avatar_female_50.gif"
                   alt
@@ -49,7 +54,13 @@
             </li>
           </div>
           <div class="btn">
-            <el-button type="primary" @click="getCom" v-show="flag">加载更多</el-button>
+            <el-button
+              type="primary"
+              @click="getCom"
+              v-if="flag && commits.length >= 3"
+              class="more"
+              size="mini"
+            >加载更多</el-button>
           </div>
         </ul>
         <div v-else class="noCom">暂无评价</div>
@@ -66,8 +77,8 @@
           <div class="text-wrapper">
             <textarea v-model="content"></textarea>
             <div class="btn">
-              <el-button type="primary" @click="commit">评价</el-button>
-              <el-button type="info" @click="hideCom">取消</el-button>
+              <el-button type="primary" @click="commit" class="cc" size="small">评价</el-button>
+              <el-button type="info" @click="hideCom" size="small">取消</el-button>
             </div>
           </div>
         </div>
@@ -77,7 +88,7 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll'
+import BScroll from "better-scroll";
 import qs from "qs";
 import Star from "../../star/Star";
 import Split from "../../split/Split";
@@ -102,8 +113,8 @@ export default {
   },
   computed: {
     avatar() {
-      return localStorage.getItem('userAvatar')
-        ? localStorage.getItem('userAvatar')
+      return localStorage.getItem("userAvatar")
+        ? localStorage.getItem("userAvatar")
         : `data:image/jpg;base64,R0lGODlhMgAyANUAAAAAAP////7+/v39/fz8/Pv7+/r6+vn5+fj4+Pf39/b29vX19fT09PPz8/Ly
 8vHx8fDw8O/v7+7u7u3t7ezs7Ovr6+rq6unp6ejo6Ofn5+bm5uXl5eTk5OPj4+Li4uHh4eDg4P//
 /wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -129,6 +140,7 @@ T5/+RD5BAAA7`;
       this.show = true;
     },
     hideCom() {
+      this.content = "";
       this.show = false;
     },
     commit() {
@@ -146,12 +158,18 @@ T5/+RD5BAAA7`;
         .then(res => {
           console.log(res.data);
           if (res.data.valid) {
-            alert(res.data.message);
+            this.$Toast({
+              message: res.data.message,
+              duration: 100
+            });
             this.show = false;
-            this.getCommit()
+            this.getCommit();
             this.flag = true;
           } else {
-            alert(res.data.message);
+            this.$Toast({
+              message: res.data.message,
+              duration: 1000
+            });
           }
         })
         .catch(err => {
@@ -159,28 +177,36 @@ T5/+RD5BAAA7`;
         });
     },
     getCom() {
-      this.$axios.get('ordering/api/getCom.php?comId=' + this.$cookies.get('id'))
-      .then(res => {
-        console.log(res)
-        this.commits = res.data.reverse();
-        this.flag = false
-        // this.$nextTick(() => {
-        //     this.initScroll();
-        //   });
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      this.$axios
+        .get("ordering/api/getCom.php?comId=" + this.$cookies.get("id"))
+        .then(res => {
+          console.log(res);
+          this.commits = res.data.reverse();
+          this.flag = false;
+          // this.$nextTick(() => {
+          //     this.initScroll();
+          //   });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     getCommit() {
-      this.$axios.get('ordering/api/getCom.php?comId=' + this.$cookies.get('id'))
-      .then(res => {
-        console.log(res)
-        this.commits = res.data.reverse().slice(0, 3);
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      this.$axios
+        .get("ordering/api/getCom.php?comId=" + this.$cookies.get("id"))
+        .then(res => {
+          console.log(res);
+          if (res.data) {
+            if (res.data.length >= 3) {
+              this.commits = res.data.reverse().slice(0, 3);
+            } else {
+              this.commits = res.data.reverse();
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     initScroll() {
       this.mainScroll = new BScroll(this.$refs.mainScroll, {
@@ -189,13 +215,15 @@ T5/+RD5BAAA7`;
     }
   },
   created() {
-    this.getCommit()
+    this.getCommit();
   }
 };
 </script>
 
 <style lang="stylus" scoped>
 @import '../../../../common/stylus/mixin.styl';
+
+$fontred = #ce3d3e;
 
 .move-enter-active, .move-leave-active {
   transition: all 0.5s;
@@ -210,8 +238,8 @@ T5/+RD5BAAA7`;
   top: 174px;
   // bottom: 0;
   width: 100%;
-  // overflow: hidden;
 
+  // overflow: hidden;
   .ratings-content {
     .overview {
       display: flex;
@@ -310,9 +338,9 @@ T5/+RD5BAAA7`;
         margin-right: 18px;
         padding: 8px 15px;
         border-radius: 25px;
-        font-size: 14px;
+        font-size: 12px;
         color: #fff;
-        background: #abcdef;
+        background: $fontred;
       }
     }
 
@@ -363,11 +391,17 @@ T5/+RD5BAAA7`;
       .btn {
         margin-top: 10px;
         text-align: center;
+
+        .more {
+          background: $fontred;
+          border: none;
+        }
       }
 
       .noCom {
         padding: 16px 0;
         font-size: 12px;
+        text-align: center;
         color: rgb(147, 153, 159);
       }
     }
@@ -426,12 +460,17 @@ T5/+RD5BAAA7`;
         }
 
         textarea:focus {
-          border: 1px solid #abcdef;
+          border: 1px solid $fontred;
         }
 
         .btn {
           margin-top: 20px;
           text-align: center;
+
+          .cc {
+            background: $fontred;
+            border: none;
+          }
         }
       }
     }

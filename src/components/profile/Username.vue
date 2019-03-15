@@ -7,7 +7,8 @@
           <el-input type="text" autocomplete="off" v-model="username" placeholder="请输入昵称"></el-input>
         </el-form-item>
         <el-form-item class="content">
-          <el-button type="primary" @click="confirm">确认</el-button>
+          <el-button type="primary" @click="confirm" size="small" class="confirm">确认</el-button>
+          <el-button @click="close" size="small">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -37,11 +38,23 @@ export default {
     hide(flag) {
       this.show = false;
     },
+    close() {
+      this.username = '';
+      this.hide();
+    },
     confirm() {
       if (this.username === "") {
-        alert("请输入昵称");
+        this.$Toast({
+          message: "请输入昵称",
+          duration: 1000,
+          position: 'top'
+        });
       } else if (this.username === this.getUsername) {
-          alert("昵称还未修改哦")
+          this.$Toast({
+            message: "昵称还未修改哦",
+            duration: 1000,
+            position: 'top'
+          });
       } else {
         let obj = {
           send: 1,
@@ -54,12 +67,18 @@ export default {
           .post("ordering/api/usernameSave.php", data)
           .then(res => {
             if (res.data.valid) {
-              alert(res.data.message);
+              this.$Toast({
+                message: res.data.message,
+                duration: 1000
+              });
               this.$emit("setUsername", this.username);
               this.show = false;
               this.$cookies.set('username', this.username)
             } else {
-              alert(res.data.message);
+              this.$Toast({
+                message: res.data.message,
+                duration: 1000
+              });
             }
           })
           .catch(err => {
@@ -95,4 +114,10 @@ export default {
 .content-wrapper {
   margin: 0 auto;
 }
+
+/* .confirm {
+  background: #ce3d3e;
+  border: none;
+} */
+
 </style>

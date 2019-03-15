@@ -86,11 +86,17 @@ export default {
       this.$axios.post('ordering/api/loginSave.php', data)
       .then((res) => {
         if (res.data.valid) {
-          alert(res.data.message)
+          this.$Toast({
+            message: res.data.message,
+            duration: 1000
+          });
           this.$cookies.set('email', this.ruleForm2.email)
           this.$router.push('/')
         } else {
-          alert(res.data.message + ',请重新输入!')
+          this.$Toast({
+            message: res.data.message,
+            duration: 1000
+          });
         }
       })
       .catch((err) => {

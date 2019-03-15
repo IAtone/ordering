@@ -143,6 +143,7 @@ export default {
       this.fold = true;
     },
     pay() {
+      let vm = this;
       if (this.$cookies.get("email")) {
         if (this.totalPrice < this.minPrice) {
           return;
@@ -153,10 +154,18 @@ export default {
         } else {
           price = this.totalPrice;
         }
-        alert(`您需要支付￥${price}`);
+        this.$Toast({
+          message: `您需要支付￥${price}`,
+          duration: 1000
+        });
       } else {
-        alert('未登录，请先登录！')
-        this.$router.push('/outer')
+        this.$Toast({
+          message: '未登录，请先登录！',
+          duration: 1000
+        });
+        setTimeout(function() {
+          vm.$router.push('/outer')
+        }, 800)
       }
     },
     enter(el) {
@@ -174,7 +183,8 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../../../common/stylus/mixin.styl';
-
+$fontred = #ce3d3e
+// rgba(0, 160, 220)
 // 动画fade渐变消失出现
 .fade-enter-active, .fade-leave-active {
   transition: opacity 1s;
@@ -223,7 +233,7 @@ export default {
             background: #2b343c;
 
             &.highlight {
-              background: rgb(0, 160, 220);
+              background: $fontred;
             }
 
             .icon-shopping_cart {
@@ -327,7 +337,7 @@ export default {
         .empty {
           float: right;
           font-size: 12px;
-          color: rgb(0, 160, 220);
+          color: $fontred;
         }
       }
 
@@ -344,6 +354,11 @@ export default {
           border-1px(rgba(7, 17, 27, 0.1));
 
           .name {
+            display: inline-block;
+            width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             line-height: 24px;
             font-size: 14px;
             color: rgb(7, 17, 27);

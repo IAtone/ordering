@@ -70,12 +70,18 @@ export default {
         .then(res => {
           // console.log(res);
           if (res.data.valid) {
-            alert(res.data.message);
+            this.$Toast({
+              message: res.data.message,
+              duration: 1000
+            });
             // console.log(this.avatarUrl)
             localStorage.setItem('userAvatar', this.avatarUrl)
             // console.log(localStorage.getItem('userAvatar'))
           } else {
-            alert(res.data.message);
+            this.$Toast({
+              message: res.data.message,
+              duration: 1000
+            });
           }
         })
         .catch(err => {

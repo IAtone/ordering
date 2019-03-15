@@ -20,8 +20,8 @@
           <el-input type="password" v-model="ruleForm2.checkPwd" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm2')">修改</el-button>
-          <el-button @click="resetForm('ruleForm2')">重置</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm2')" size="small" class="update">修改</el-button>
+          <el-button @click="resetForm('ruleForm2')" size="small">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -94,11 +94,18 @@ export default {
         .post("ordering/api/passwordSave.php", data)
         .then(res => {
           if (res.data.valid) {
-            alert(res.data.message);
+            this.$Toast({
+              message: res.data.message,
+              duration: 1000
+            });
             this.show = false;
             this.resetForm('ruleForm2')
           } else {
-            alert(res.data.message);
+            this.$Toast({
+              message: res.data.message,
+              duration: 1000,
+              position: 'top'
+            });
           }
         })
         .catch(err => {
@@ -145,4 +152,8 @@ export default {
 .content-wrapper {
   margin: 0 auto;
 }
+/* .update {
+  background: #ce3d3e;
+  border: none;
+} */
 </style>

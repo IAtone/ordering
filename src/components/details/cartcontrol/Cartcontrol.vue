@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
+$fontred = #ce3d3e
 .cartcontrol {
   font-size: 0;
 
@@ -61,7 +61,7 @@ export default {
       display: inline-block;
       line-height: 24px;
       font-size: 24px;
-      color: rgb(0, 160, 220);
+      color: $fontred;
       transition: all .4s linear;
       &.imove-transition {
           transform: rotate(0)
@@ -101,7 +101,7 @@ export default {
     padding: 6px;
     line-height: 24px;
     font-size: 24px;
-    color: rgb(0, 160, 220);
+    color: $fontred;
   }
 }
 </style>

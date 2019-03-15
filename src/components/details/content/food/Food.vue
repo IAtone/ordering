@@ -15,7 +15,7 @@
             <span class="rating">好评率{{ food.rating }}%</span>
           </div>
           <div class="price">
-            <span class="now">{{ food.price }}</span>
+            <span class="now">￥{{ food.price }}</span>
             <span v-show="food.oldPrice" class="old">￥{{ food.oldPrice }}</span>
           </div>
           <div class="cartcontrol-wrapper">
@@ -168,7 +168,7 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../../../../common/stylus/mixin.styl';
-
+$fontred = #ce3d3e
 .move-enter-active, .move-leave-active {
   transition: all 0.5s;
 }
@@ -191,6 +191,7 @@ export default {
     width: 100%;
     height: 0;
     padding-top: 100%; // 没高度相对于宽度的大小
+    background: rgba(0, 0, 0, .1);
 
     img {
       position: absolute;
@@ -209,7 +210,8 @@ export default {
         display: block;
         padding: 10px;
         font-size: 20px;
-        color: #fff;
+        font-weight: bold;
+        color: $fontred;
       }
     }
   }
@@ -277,7 +279,7 @@ export default {
       border-radius: 12px;
       font-size: 10px;
       color: #fff;
-      background: rgb(0, 160, 220);
+      background: $fontred;
     }
   }
 
@@ -359,7 +361,7 @@ export default {
         }
 
         .icon-thumb_up {
-          color: rgb(0, 160, 220);
+          color: $fontred;
         }
 
         .icon-thumb_down {

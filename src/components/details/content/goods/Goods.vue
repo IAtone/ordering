@@ -32,14 +32,14 @@
                   <img :src="food.icon" alt>
                 </div>
                 <div class="content">
-                  <h2 class="name">{{ food.name }}</h2>
+                  <h2 class="name">{{ filterName(food.name) }}</h2>
                   <p class="desc">{{ food.description }}</p>
                   <div class="extra">
                     <span class="count">月售{{ food.sellCount }}份</span>
                     <span>好评率{{ food.rating }}%</span>
                   </div>
                   <div class="price">
-                    <span class="now">{{ food.price }}</span>
+                    <span class="now">￥{{ food.price }}</span>
                     <span v-show="food.oldPrice" class="old">￥{{ food.oldPrice }}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
@@ -84,10 +84,19 @@ export default {
     };
   },
   methods: {
+    filterName(name) {
+      if (name.length > 11) {
+        return name.slice(0, 12) + '...';
+      } else {
+        return name;
+      }
+    },
     getGoods() {
-      this.$axios.get("ordering/api/data.php").then(res => {
+      this.$axios.get("ordering/api/datas.php").then(res => {
         const data = JSON.parse(res.data);
-        this.goods = data.goods;
+        console.log(data);
+        console.log(this.$cookies.get('id'))
+        this.goods = data[this.$cookies.get('id')].goods;
         this.$nextTick(() => {
           this.initScroll();
           this.calHeight();
@@ -296,7 +305,6 @@ export default {
 
       .content {
         flex: 1;
-
         .name {
           margin: 2px 0 8px 0;
           height: 14px;

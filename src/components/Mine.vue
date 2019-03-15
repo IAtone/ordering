@@ -33,7 +33,7 @@
         <i class="icon-arrow_lift"></i>
       </div>
       <div class="logout">
-        <el-button type="primary" @click="logout">注销登录</el-button>
+        <el-button type="primary" @click="logout" class="quit" size="medium">注销登录</el-button>
       </div>
     </div>
     <Avatar ref="avatar" @baseUrl="baseUrl"></Avatar>
@@ -45,9 +45,9 @@
 
 <script>
 import Avatar from "./profile/Avatar";
-import Username from "./profile/Username"
-import Phone from "./profile/Phone"
-import Password from "./profile/Password"
+import Username from "./profile/Username";
+import Phone from "./profile/Phone";
+import Password from "./profile/Password";
 
 export default {
   components: {
@@ -74,7 +74,7 @@ export default {
           this.user = res.data[0];
           this.imgUrl =
             "https://www.atone.shop/ordering/" + this.user.userAvatar.slice(3);
-          this.level = this.user.userLevel === "1" ? "普通用户" : "会员"; 
+          this.level = this.user.userLevel === "1" ? "普通用户" : "会员";
         })
         .catch(err => {
           console.log(err);
@@ -102,12 +102,27 @@ export default {
       this.user.phoneNumber = data;
     },
     logout() {
-      let flag = confirm('确定注销')
-      if (flag === true) {
-        this.$cookies.remove('email')
-        this.$router.push('/outer')
-      } else {
-      }
+      this.$confirm("确定要注销此账号, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$Toast({
+            message: "注销成功!",
+            duration: 1000
+          });
+          setTimeout(() => {
+            this.$cookies.remove("email");
+            this.$router.push("/outer");
+          }, 800)
+        })
+        .catch(() => {
+          this.$Toast({
+            message: "已取消注销",
+            duration: 1000
+          });
+        });
     }
   },
   created() {
@@ -117,6 +132,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+$fontred = #ce3d3e
 .mine {
   position: fixed;
   top: 0;
@@ -173,7 +189,11 @@ export default {
 
     .logout {
       padding: 20px 0;
-      text-align: center
+      text-align: center;
+      .quit {
+        background: $fontred;
+        border: none;
+      }
     }
   }
 }

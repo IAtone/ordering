@@ -40,7 +40,7 @@ export const routes = [
     },
     {
         name: 'details',
-        path: '/details/:id',
+        path: '/details',
         component: Details,
         redirect: '/details/goods',
         children: [

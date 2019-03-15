@@ -6,6 +6,13 @@
     <div ref="mainScroll" class="mainScroll">
       <div>
         <!-- 用这个BScroll 得用一个div包着 两个就不行了 -->
+        <div class="swiper-wrapper">
+          <mt-swipe :auto="3500" class="my-swipeimg" :showIndicators="false">
+            <mt-swipe-item v-for="(item, index) in swiperArr" :key="index">
+              <img :src="item" alt="">
+            </mt-swipe-item>
+          </mt-swipe>
+        </div>
         <div class="sort">
           <h1 class="title">排序</h1>
           <span class="sellCount" @click="countSort">月销售量</span>
@@ -19,9 +26,9 @@
                 v-for="(seller, index) in filterSellers"
                 :key="index"
                 class="item"
-                @click="setId(index)"
+                @click="setId(seller.id)"
               >
-                <router-link tag="div" :to="{path:/details/ + index}" class="route">
+                <router-link tag="div" :to="{path: '/details'}" class="route">
                   <div class="avatar">
                     <img :src="seller.avatar" alt>
                   </div>
@@ -66,6 +73,13 @@ export default {
   data() {
     return {
       sellers: [],
+      swiperArr: [
+        "http://img4.imgtn.bdimg.com/it/u=1761033308,3594420462&fm=26&gp=0.jpg",
+        "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3725100111,4075611937&fm=26&gp=0.jpg",
+        "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1874150882,3864376148&fm=26&gp=0.jpg",
+        "http://img2.imgtn.bdimg.com/it/u=2292070531,2026965857&fm=26&gp=0.jpg",
+        "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1443205896,2241628519&fm=200&gp=0.jpg"
+      ],
       search: ""
     };
   },
@@ -84,14 +98,16 @@ export default {
           this.$nextTick(() => {
             this.initScroll();
           });
-          console.log(this.sellers);
+          // console.log(this.sellers);
         })
         .catch(err => {
           console.log(err);
         });
     },
     setId(id) {
+      // console.log(id)
       this.$cookies.set("id", id);
+      // console.log(this.$cookies.get("id"))
     },
     compare(attr, toDown) {
       return function(a, b) {
@@ -128,6 +144,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+$fontred = #ce3d3e
 .main {
   .search-wrapper {
     position: fixed;
@@ -138,7 +155,7 @@ export default {
     box-sizing: border-box;
     padding: 10px 20px;
     text-align: center;
-    background: #abcdef;
+    background: $fontred;
 
     .search {
       height: 40px;
@@ -148,14 +165,14 @@ export default {
       border: none;
       transition: border 0.3s;
       box-sizing: border-box;
-      box-shadow: 5px 5px 10px #123456;
+      box-shadow: 3px 3px 5px rgba(255, 255, 255, .5);
       color: #000;
       font-size: 16px;
       transition: 0.5s;
 
-      &:focus {
-        border: 1px solid #123456;
-      }
+      // &:focus {
+      //   border: 1px solid #123456;
+      // }
     }
   }
 
@@ -166,12 +183,26 @@ export default {
     bottom: 50px;
     width: 100%;
     overflow: hidden;
-
+    .swiper-wrapper {
+      padding: 20px;
+      .my-swipeimg {
+        height: 25vh;  
+        font-size: 30px;
+        text-align: center;
+        border-radius: 5px;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, .3);
+        color: #fff;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
     .sort {
       padding: 0 20px;
 
       .title {
-        padding: 5px 0;
+        padding-bottom: 13px;
         text-align: center;
         font-size: 13px;
       }
@@ -181,7 +212,7 @@ export default {
         padding: 5px 10px;
         border-radius: 5px;
         background: #eee;
-        color: #123456;
+        color: $fontred;
         font-size: 10px;
         margin-right: 6px;
       }
@@ -251,7 +282,7 @@ export default {
                   border-radius: 2px;
                   font-size: 10px;
                   color: #fff;
-                  background: #123456;
+                  background: $fontred;
                 }
               }
 

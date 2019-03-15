@@ -111,10 +111,16 @@ export default {
       this.$axios.post('ordering/api/registerSave.php', data)
       .then((res) => {
         if (res.data.valid) {
-          alert(res.data.message)
+          this.$Toast({
+            message: res.data.message,
+            duration: 1000
+          });
           this.$router.push('/login')
         } else {
-          alert(res.data.message)
+          this.$Toast({
+            message: res.data.message,
+            duration: 1000
+          });
           this.resetForm('ruleForm2');
         }
       })

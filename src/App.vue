@@ -10,7 +10,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="stylus">
+// $fontred = #ce3d3e
 [v-cloak] {
   display: none;
 }
@@ -20,6 +21,21 @@ export default {
 .el-form {
   width: 90%;
 }
+.el-message-box {
+  width: auto !important;
+}
+.el-message-box__btns {
+  text-align: center !important;
+}
+// .mint-swipe-indicator {
+//   opacity: 1 !important;
+// }
+// .el-button--primary.is-active, .el-button--primary:active {
+//   background: $fontred !important;
+// }
+// .el-button--primary:hover {
+//   background: rgba(206, 61, 62, .8) !important;  
+// }
 
 /* 上传头像 */
 .vicp-wrap {

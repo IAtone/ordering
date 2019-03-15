@@ -123,10 +123,15 @@ export default {
       });
     },
     toggleFavorite(event) {
+      var vm = this;
       if (!event._constructed) {
         return;
       }
       this.favorite = !this.favorite;
+      this.$Toast({
+        message: vm.favorite ? '已收藏' : '收藏已取消',
+        duration: 1000
+      });
     }
   },
   computed: {

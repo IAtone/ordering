@@ -92,7 +92,7 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../../../common/stylus/mixin.styl';
-
+$fontred = #ce3d3e
 .ratingselect {
   .rating-type {
     padding: 18px 0;
@@ -119,10 +119,10 @@ export default {
       }
 
       &.positive {
-        background: rgba(0, 160, 220, 0.2);
+        background: rgba(206, 61, 62, .2);
 
         &.active {
-          background: rgb(0, 160, 220);
+          background: $fontred;
         }
       }
 

@@ -7,7 +7,8 @@
           <el-input type="number" autocomplete="off" v-model="phoneNumber" placeholder="请输入手机号码"></el-input>
         </el-form-item>
         <el-form-item class="content">
-          <el-button type="primary" @click="confirm">确认</el-button>
+          <el-button type="primary" @click="confirm" size="small" class="confirm">确认</el-button>
+          <el-button @click="close" size="small">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -37,14 +38,30 @@ export default {
     hide(flag) {
       this.show = false;
     },
+    close() {
+      this.phoneNumber = '';
+      this.hide();
+    },
     confirm() {
         let pattern = /^1[34578]\d{9}$/;
       if (this.getPhone === "") {
-        alert("请输入手机号码");
+        this.$Toast({
+          message: "请输入手机号码",
+          duration: 1000,
+          position: 'top'
+        });
       } else if (this.phoneNumber === this.getPhone) {
-          alert("手机号码还未修改哦")
+          this.$Toast({
+            message: "手机号码还未修改哦",
+            duration: 1000,
+            position: 'top'
+          });
       } else if (!pattern.test(this.phoneNumber)) {
-          alert("请输入正确的手机号码")
+          this.$Toast({
+            message: "请输入正确的手机号码",
+            duration: 1000,
+            position: 'top'
+          });
       } else {
         let obj = {
           send: 1,
@@ -57,18 +74,24 @@ export default {
           .post("ordering/api/phoneSave.php", data)
           .then(res => {
             if (res.data.valid) {
-              alert(res.data.message);
+              this.$Toast({
+                message: res.data.message,
+                duration: 1000
+              });
               this.$emit("setPhone", this.phoneNumber);
               this.show = false;
             } else {
-              alert(res.data.message);
+              this.$Toast({
+                message: res.data.message,
+                duration: 1000
+              });
             }
           })
           .catch(err => {
             console.log(err);
           });
       }
-    }
+    },
   }
 };
 </script>
@@ -97,4 +120,9 @@ export default {
 .content-wrapper {
   margin: 0 auto;
 }
+
+/* .confirm {
+  background: #ce3d3e;
+  border: none;
+} */
 </style>

@@ -16,6 +16,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+$fontred = #ce3d3e
 .index {
   .bottom {
     position: fixed;
@@ -38,11 +39,11 @@ export default {
       color: #ccc;
 
       &:first-child {
-        border-right: 1px solid #ccc;
+        border-right: 1px solid $fontred;
       }
 
       &.router-link-exact-active {
-        color: #123456;
+        color: $fontred;
       }
     }
   }

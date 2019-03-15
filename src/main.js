@@ -4,10 +4,12 @@ import VueRouter from 'vue-router'
 import { routes } from './routes/router'
 import axios from 'axios'
 import '../src/common/stylus/index.styl'
-import Cookie from './common/js/cookie.js'
+// import Cookie from './common/js/cookie.js'
 
 import elementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import { Toast, Swipe, SwipeItem, Loadmore  } from 'mint-ui';
+import 'mint-ui/lib/style.css'
 // import {baseUrl} from '../vue.config'
 import VueCookies from 'vue-cookies'
 
@@ -15,11 +17,16 @@ Vue.use(elementUI)
 Vue.use(VueRouter)
 Vue.use(VueCookies)
 
+Vue.component('mt-swipe', Swipe);
+Vue.component('mt-swipe-item', SwipeItem);
+Vue.component('mt-loadmore', Loadmore);
+
 VueCookies.config('7d')
 
 axios.defaults.baseURL = 'https://www.atone.shop/'
 axios.defaults.withCredentials = true
 Vue.prototype.$axios = axios
+Vue.prototype.$Toast = Toast
 
 
 Vue.config.productionTip = false
