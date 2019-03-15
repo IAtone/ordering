@@ -7,7 +7,7 @@
       <div>
         <!-- 用这个BScroll 得用一个div包着 两个就不行了 -->
         <div class="swiper-wrapper">
-          <mt-swipe :auto="3500" class="my-swipeimg" :showIndicators="false">
+          <mt-swipe :auto="3000" class="my-swipeimg" :showIndicators="false">
             <mt-swipe-item v-for="(item, index) in swiperArr" :key="index">
               <img :src="item" alt="">
             </mt-swipe-item>

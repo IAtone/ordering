@@ -331,12 +331,13 @@ $fontred = #ce3d3e
         .title {
           float: left;
           font-size: 14px;
-          color: rgb(7, 17, 27);
+          font-weight: bold;
+          color: #333;
         }
 
         .empty {
           float: right;
-          font-size: 12px;
+          font-size: 13px;
           color: $fontred;
         }
       }
@@ -360,7 +361,7 @@ $fontred = #ce3d3e
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 24px;
-            font-size: 14px;
+            font-size: 13px;
             color: rgb(7, 17, 27);
           }
 

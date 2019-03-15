@@ -26,44 +26,55 @@
       </div>
       <Split></Split>
       <div class="rating">
-        <h1 class="title">商家评价</h1>
+        <h1 class="title">评价商家</h1>
       </div>
       <div class="comment">
         <span @click="showCom">用户评价</span>
       </div>
       <div class="rating-wrapper">
-        <ul v-if="commits.length > 0">
-          <div class="no-rating">
-            <li class="rating-item" v-for="(val, index) in commits" :key="index">
-              <div class="user">
-                <span class="username">{{ val.userName }}</span>
-                <img
-                  :src="'https://www.atone.shop/ordering/' + val.userAvatar.slice(3)"
-                  alt
-                  class="avatar"
-                  v-if="val.userAvatar"
-                >
-                <img
-                  src="https://tvax4.sinaimg.cn/default/images/default_avatar_female_50.gif"
-                  alt
-                  v-else
-                >
+        <div class="page-loadmore">
+          <div
+            class="page-loadmore-wrapper"
+            ref="wrapper"
+            :style="{ height: wrapperHeight + 'px' }"
+          >
+            <mt-loadmore
+              :bottom-method="loadBottom"
+              @bottom-status-change="handleBottomChange"
+              :bottom-all-loaded="allLoaded"
+              ref="loadmore"
+            >
+              <ul>
+                <div class="no-rating">
+                  <li class="rating-item" v-for="(val, index) in commits" :key="index">
+                    <div class="user">
+                      <span class="username">{{ val.userName }}</span>
+                      <img
+                        :src="'https://www.atone.shop/ordering/' + val.userAvatar.slice(3)"
+                        alt
+                        class="avatar"
+                        v-if="val.userAvatar"
+                      >
+                      <img
+                        src="https://tvax4.sinaimg.cn/default/images/default_avatar_female_50.gif"
+                        alt
+                        v-else
+                      >
+                    </div>
+                    <div class="time">{{ val.createTime }}</div>
+                    <p class="text">{{ val.comContent }}</p>
+                  </li>
+                </div>
+              </ul>
+              <div slot="bottom" class="mint-loadmore-bottom">
+                <span v-show="bottomStatus !== 'loading'" :class="{ 'is-rotate': bottomStatus === 'drop' }">↑</span>
+                <span v-show="bottomStatus === 'loading'">
+                  loading...
+                </span>
               </div>
-              <div class="time">{{ val.createTime }}</div>
-              <p class="text">{{ val.comContent }}</p>
-            </li>
+            </mt-loadmore>
           </div>
-          <div class="btn">
-            <el-button
-              type="primary"
-              @click="getCom"
-              v-if="flag && commits.length >= 3"
-              class="more"
-              size="mini"
-            >加载更多</el-button>
-          </div>
-        </ul>
-        <div v-else class="noCom">暂无评价</div>
+        </div>
       </div>
     </div>
     <transition name="move">
@@ -108,7 +119,12 @@ export default {
       show: false,
       content: "",
       commits: [],
-      flag: true
+      num: 10,
+      flag: true,
+      len: 0,
+      allLoaded: false,
+      bottomStatus: '',
+      wrapperHeight: 0
     };
   },
   computed: {
@@ -145,6 +161,13 @@ T5/+RD5BAAA7`;
     },
     commit() {
       console.log(this.content);
+      if (this.content === "") {
+        this.$Toast({
+          message: "评价内容不能为空！",
+          duration: 1000
+        })
+        return 
+      }
       let obj = {
         email: this.$cookies.get("email"),
         comId: this.$cookies.get("id"),
@@ -160,10 +183,11 @@ T5/+RD5BAAA7`;
           if (res.data.valid) {
             this.$Toast({
               message: res.data.message,
-              duration: 100
+              duration: 1000
             });
             this.show = false;
-            this.getCommit();
+            this.num = 10;
+            this.getCom();
             this.flag = true;
           } else {
             this.$Toast({
@@ -180,29 +204,16 @@ T5/+RD5BAAA7`;
       this.$axios
         .get("ordering/api/getCom.php?comId=" + this.$cookies.get("id"))
         .then(res => {
-          console.log(res);
-          this.commits = res.data.reverse();
-          this.flag = false;
-          // this.$nextTick(() => {
-          //     this.initScroll();
-          //   });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    getCommit() {
-      this.$axios
-        .get("ordering/api/getCom.php?comId=" + this.$cookies.get("id"))
-        .then(res => {
-          console.log(res);
-          if (res.data) {
-            if (res.data.length >= 3) {
-              this.commits = res.data.reverse().slice(0, 3);
-            } else {
-              this.commits = res.data.reverse();
-            }
+          console.log(res.data.length);
+          this.len = res.data.length;
+          if (this.len - this.num < 20) {
+            this.num += this.len - this.num;
+          } else {
+            this.num += 10;
           }
+          this.commits = res.data.reverse().slice(0, this.num + 1);
+          this.flag = false;
+          console.log(this.num);
         })
         .catch(err => {
           console.log(err);
@@ -212,11 +223,27 @@ T5/+RD5BAAA7`;
       this.mainScroll = new BScroll(this.$refs.mainScroll, {
         click: true
       });
+    },
+    handleBottomChange(status) {
+      this.bottomStatus = status;
+    },
+    loadBottom() {
+      setTimeout(() => {
+        if (this.num < this.len) {
+          this.getCom();
+        } else {
+          this.allLoaded = true;
+        }
+        this.$refs.loadmore.onBottomLoaded();
+      }, 500);
     }
   },
   created() {
-    this.getCommit();
-  }
+    this.getCom();
+  },
+  mounted() {
+      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+    }
 };
 </script>
 
@@ -341,6 +368,7 @@ $fontred = #ce3d3e;
         font-size: 12px;
         color: #fff;
         background: $fontred;
+        box-shadow: 3px 3px 5px rgba(206, 61, 62, .8);
       }
     }
 
@@ -354,7 +382,7 @@ $fontred = #ce3d3e;
 
         .user {
           position: absolute;
-          right: 0;
+          right: 10px;
           top: 16px;
           line-height: 12px;
           font-size: 0;
@@ -475,5 +503,60 @@ $fontred = #ce3d3e;
       }
     }
   }
+}
+.loading-background, .mint-loadmore-top span {
+    -webkit-transition: .2s linear;
+    transition: .2s linear;
+}
+.mint-loadmore-top span {
+    display: inline-block;
+    vertical-align: middle;
+}
+ 
+.mint-loadmore-top span.is-rotate {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+ 
+.page-loadmore .mint-spinner {
+    display: inline-block;
+    vertical-align: middle
+}
+ 
+.page-loadmore-desc {
+    text-align: center;
+    color: #666;
+    padding-bottom: 5px
+}
+ 
+.page-loadmore-desc:last-of-type,
+.page-loadmore-listitem {
+    border-bottom: 1px solid #eee
+}
+ 
+.page-loadmore-listitem {
+    height: 50px;
+    line-height: 50px;
+    text-align: center
+}
+ 
+.page-loadmore-listitem:first-child {
+    border-top: 1px solid #eee
+}
+ 
+.page-loadmore-wrapper {
+    // overflow-y: scroll
+}
+ 
+.mint-loadmore-bottom span {
+    display: inline-block;
+    -webkit-transition: .2s linear;
+    transition: .2s linear;
+    vertical-align: middle
+}
+ 
+.mint-loadmore-bottom span.is-rotate {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg)
 }
 </style>
