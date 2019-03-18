@@ -7,17 +7,22 @@
       <div>
         <!-- 用这个BScroll 得用一个div包着 两个就不行了 -->
         <div class="swiper-wrapper">
-          <mt-swipe :auto="3000" class="my-swipeimg" :showIndicators="false">
+          <mt-swipe :auto="2500" class="my-swipeimg" :showIndicators="false">
             <mt-swipe-item v-for="(item, index) in swiperArr" :key="index">
-              <img :src="item" alt="">
+              <img :src="item" alt>
             </mt-swipe-item>
           </mt-swipe>
         </div>
         <div class="sort">
-          <h1 class="title">排序</h1>
-          <span class="sellCount" @click="countSort">月销售量</span>
+          <!-- <span class="sellCount" @click="countSort">月销售量</span>
           <span class="deliveryTime" @click="timeSort">配送时间</span>
-          <span class="score" @click="scoreSort">评分</span>
+          <span class="score" @click="scoreSort">评分</span>-->
+          <span
+            v-for="(item, index) in sortArr"
+            :key="index"
+            @click="sort(item.click, index)"
+            :class="{active: curIndex == index}"
+          >{{ item.text }}</span>
         </div>
         <div class="content-wrapper">
           <div class="content">
@@ -80,7 +85,22 @@ export default {
         "http://img2.imgtn.bdimg.com/it/u=2292070531,2026965857&fm=26&gp=0.jpg",
         "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1443205896,2241628519&fm=200&gp=0.jpg"
       ],
-      search: ""
+      search: "",
+      curIndex: 0,
+      sortArr: [
+        {
+          click: "countSort",
+          text: "月销售量"
+        },
+        {
+          click: "timeSort",
+          text: "配送时间"
+        },
+        {
+          click: "scoreSort",
+          text: "评分"
+        }
+      ]
     };
   },
   created() {
@@ -95,6 +115,7 @@ export default {
           data.forEach(value => {
             this.sellers.push(value.seller);
           });
+          this.countSort();
           this.$nextTick(() => {
             this.initScroll();
           });
@@ -117,6 +138,16 @@ export default {
           return a[attr] - b[attr];
         }
       };
+    },
+    sort(type, index) {
+      this.curIndex = index;
+      if (type === "countSort") {
+        this.countSort();
+      } else if (type === "timeSort") {
+        this.timeSort();
+      } else if (type === "scoreSort") {
+        this.scoreSort();
+      }
     },
     countSort() {
       this.sellers.sort(this.compare("sellCount", true));
@@ -144,7 +175,24 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-$fontred = #ce3d3e
+input::-webkit-input-placeholder {
+  color: #fff;
+}
+
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #fff;
+}
+
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: #fff;
+}
+
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #fff;
+}
+
+$fontred = #ce3d3e;
+
 .main {
   .search-wrapper {
     position: fixed;
@@ -155,24 +203,21 @@ $fontred = #ce3d3e
     box-sizing: border-box;
     padding: 10px 20px;
     text-align: center;
-    background: $fontred;
-
+    background: linear-gradient(to right, #F05F57, #BB4E75);
+    
     .search {
       height: 40px;
       width: 100%;
       padding: 5px 20px;
       outline: none;
       border: none;
-      transition: border 0.3s;
-      box-sizing: border-box;
-      box-shadow: 3px 3px 5px rgba(255, 255, 255, .5);
-      color: #000;
+      border: 3px solid #fff;
       font-size: 16px;
+      box-sizing: border-box;
+      // box-shadow: 3px 3px 5px rgba(255, 255, 255, 0.4);
+      color: #fff;
+      background: linear-gradient(to right, #F05F57, #BB4E75);
       transition: 0.5s;
-
-      // &:focus {
-      //   border: 1px solid #123456;
-      // }
     }
   }
 
@@ -183,21 +228,26 @@ $fontred = #ce3d3e
     bottom: 50px;
     width: 100%;
     overflow: hidden;
+    background: #fcfcfc;
+
     .swiper-wrapper {
       padding: 20px;
+
       .my-swipeimg {
-        height: 25vh;  
+        height: 25vh;
         font-size: 30px;
         text-align: center;
         border-radius: 5px;
-        box-shadow: 3px 3px 5px rgba(0, 0, 0, .3);
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
         color: #fff;
+
         img {
           width: 100%;
           height: 100%;
         }
       }
     }
+
     .sort {
       padding: 0 20px;
 
@@ -211,22 +261,27 @@ $fontred = #ce3d3e
         display: inline-block;
         padding: 5px 10px;
         border-radius: 5px;
-        background: #eee;
+        background: #fff;
         color: $fontred;
         font-size: 10px;
         margin-right: 6px;
+
+        &.active {
+          background: $fontred;
+          color: #fff;
+        }
       }
     }
 
     .content-wrapper {
       margin-top: 20px;
-      border-top: 1px solid #ccc;
+      border-top: 1px solid #eee;
       padding: 20px;
 
       .content {
         .item {
           padding-top: 20px;
-          border-bottom: 1px solid #ccc;
+          border-bottom: 1px solid #eee;
 
           &:first-child {
             padding-top: 0;
