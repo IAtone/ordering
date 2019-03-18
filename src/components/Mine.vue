@@ -48,6 +48,8 @@ import Avatar from "./profile/Avatar";
 import Username from "./profile/Username";
 import Phone from "./profile/Phone";
 import Password from "./profile/Password";
+import Cookie from '../common/js/cookie'
+import { Toast } from 'mint-ui';
 
 export default {
   components: {
@@ -115,7 +117,7 @@ export default {
           setTimeout(() => {
             this.$cookies.remove("email");
             this.$router.push("/outer");
-          }, 800)
+          }, 800);
         })
         .catch(() => {
           this.$Toast({
@@ -127,12 +129,27 @@ export default {
   },
   created() {
     this.getUser();
+  },
+  beforeRouteEnter: (to, from, next) =>{
+    console.log(this)
+    if (Cookie("email")) {
+      next();
+    } else {
+      Toast({
+        message: "未登录，请先登录",
+        duration: 1000
+      });
+      setTimeout(function() {
+        next({ name: "outer" });
+      }, 500)
+    }
   }
 };
 </script>
 
 <style lang="stylus" scoped>
-$fontred = #ce3d3e
+$fontred = #ce3d3e;
+
 .mine {
   position: fixed;
   top: 0;
@@ -190,6 +207,7 @@ $fontred = #ce3d3e
     .logout {
       padding: 20px 0;
       text-align: center;
+
       .quit {
         background: $fontred;
         border: none;

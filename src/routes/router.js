@@ -9,8 +9,6 @@ import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
 import Outer from '../components/Outer.vue'
 
-import Cookie from '../common/js/cookie'
-
 export const routes = [
     {
         name: 'index',
@@ -26,15 +24,7 @@ export const routes = [
             {
                 name: 'mine',
                 path: '/mine',
-                component: Mine,
-                beforeEnter: (to, from, next) => {
-                    if (Cookie('email')) {
-                        next()
-                    } else {
-                        alert('未登录，请先登录')
-                        next({ name: 'outer' })
-                    }
-                }
+                component: Mine
             }
         ]
     },
