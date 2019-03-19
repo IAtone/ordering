@@ -29,8 +29,7 @@ export default {};
   right: 0;
   top: 0;
   bottom: 0;
-  background: url('http://www.17sucai.com/preview/266121/2017-06-30/login/images/login-bg.png') no-repeat center center;
-  background-size: 100%, 100%;
+  background: linear-gradient(to right, #FEB692, #EA5455);
 
   .title {
     width: 100%;

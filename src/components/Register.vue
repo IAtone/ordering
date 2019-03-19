@@ -27,7 +27,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm2')">注册</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm2')" class="b-submit">注册</el-button>
           <el-button @click="resetForm('ruleForm2')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -170,6 +170,11 @@ export default {
   .title {
     margin-bottom: 30px;
     font-size: 25px;
+  }
+
+  .submit {
+    background: #ce3d3e;
+    border: none;
   }
 }
 </style>

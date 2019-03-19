@@ -20,7 +20,7 @@
           <el-input type="password" v-model="ruleForm2.checkPwd" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm2')" size="small" class="update">修改</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm2')" size="small" class="b-submit">修改</el-button>
           <el-button @click="resetForm('ruleForm2')" size="small">重置</el-button>
         </el-form-item>
       </el-form>

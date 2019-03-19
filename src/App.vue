@@ -11,6 +11,11 @@ export default {
 </script>
 
 <style lang="stylus">
+.b-submit {
+  background: #ce3d3e !important;
+  border: none !important;
+  outline: none !important;
+}
 // $fontred = #ce3d3e
 [v-cloak] {
   display: none;
@@ -26,6 +31,12 @@ export default {
 }
 .el-message-box__btns {
   text-align: center !important;
+}
+.el-button--default:focus, .el-button--default:hover {
+  color: rgb(206, 61, 62) !important;
+  outline: none !important;
+  background: rgba(206, 61, 62, .2) !important;
+  border: 1px solid rgb(206, 61, 62) !important;
 }
 // .mint-swipe-indicator {
 //   opacity: 1 !important;
@@ -57,6 +68,9 @@ export default {
 }
 .vicp-step2 {
   margin-left: 40px !important;
+}
+.vue-image-crop-upload .vicp-wrap .vicp-operate a {
+  color: #ce3d3e !important;
 }
 /**
  * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)

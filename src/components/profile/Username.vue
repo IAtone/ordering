@@ -7,7 +7,7 @@
           <el-input type="text" autocomplete="off" v-model="username" placeholder="请输入昵称"></el-input>
         </el-form-item>
         <el-form-item class="content">
-          <el-button type="primary" @click="confirm" size="small" class="confirm">确认</el-button>
+          <el-button type="primary" @click="confirm" size="small" class="b-submit">确认</el-button>
           <el-button @click="close" size="small">取消</el-button>
         </el-form-item>
       </el-form>
